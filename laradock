@@ -1,0 +1,65 @@
+#!/bin/bash
+# script para iniciar infra laradoc de desenvolvimento WEB
+
+
+case "$1" in
+    "up" )
+		echo ""
+		echo "################################################################################"
+		echo "#                                                                              #"
+		echo "#              INICIANDO INFRA ESTRUTURA DE DESENVOLVIMENTO WEB                #"
+		echo "#                                                                              #"
+		echo "################################################################################"
+		echo ""
+		echo "Container startados com docker-compose"
+		echo "Mysql Server, Apache2, PHP 7.3 e phpmyadmin"
+		echo ""
+		echo "Por Antonio Neris"
+		echo ""
+    	echo "Starting" 
+		cd $HOME/projetos/applications/laradock
+		docker-compose up -d mysql apache2 phpmyadmin
+		echo ""
+		echo "Servicos Iniciados com Sucesso"
+		echo ""
+		echo "Use o Comando 'laradock workspace' para acessar o container workspace"
+		echo ""
+		echo "User 'exit' para sair do container"
+		echo ""
+	    exit
+	;;
+    "down" )
+		echo ""
+     	echo "Desligando Infra"
+		echo ""
+		cd $HOME/projetos/applications/laradock
+        docker-compose down
+		echo ""
+		echo "Servicos Desligados com sucesso"
+		echo ""
+		echo "Por Antonio Neris"
+		echo "antonioneris@gmail.com"
+		echo ""
+		echo ""
+        exit
+	;;
+	"workspace" )
+		echo ""
+		echo "Acessando Workspace Container"
+		echo ""
+		docker exec -ti laradock_workspace_1 bash
+		echo ""
+		echo "saindo....OK"
+		exit
+	;;
+	"ps" )
+		echo ""
+     	echo "Listando Containers"
+		echo ""
+		cd $HOME/projetos/applications/laradock
+        docker-compose ps
+		echo ""
+        exit
+	;;
+esac
+
