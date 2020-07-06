@@ -4,29 +4,40 @@
 
 case "$1" in
     "up" )
-		echo ""
-		echo "################################################################################"
-		echo "#                                                                              #"
-		echo "#              INICIANDO INFRA ESTRUTURA DE DESENVOLVIMENTO WEB                #"
-		echo "#                                                                              #"
-		echo "################################################################################"
-		echo ""
-		echo "Container startados com docker-compose"
-		echo "Mysql Server, Apache2, PHP 7.3 e phpmyadmin"
-		echo ""
-		echo "Por Antonio Neris"
-		echo ""
-    	echo "Starting" 
-		cd $HOME/projetos/applications/laradock
-		docker-compose up -d mysql apache2 phpmyadmin
-		echo ""
-		echo "Servicos Iniciados com Sucesso"
-		echo ""
-		echo "Use o Comando 'laradock workspace' para acessar o container workspace"
-		echo ""
-		echo "User 'exit' para sair do container"
-		echo ""
-	    exit
+		if [ -z $2 ]
+		then
+			echo ""
+			echo "################################################################################"
+			echo "#                                                                              #"
+			echo "#              INICIANDO INFRA ESTRUTURA DE DESENVOLVIMENTO WEB                #"
+			echo "#                                                                              #"
+			echo "################################################################################"
+			echo ""
+			echo "Container startados com docker-compose"
+			echo "Mysql Server, Apache2, PHP 7.3 e phpmyadmin"
+			echo ""
+			echo ""
+			echo "Starting" 
+			cd $HOME/projetos/applications/laradock
+			docker-compose up -d mysql apache2 phpmyadmin
+			echo ""
+			echo "Servicos Iniciados com Sucesso"
+			echo ""
+			echo "Use o Comando 'laradock workspace' para acessar o container workspace"
+			echo ""
+			echo "User 'exit' para sair do container"
+			echo ""
+			exit
+		else
+			echo "Starting $2 Container"
+			cd $HOME/projetos/applications/laradock
+			docker-compose up -d $2
+			echo ""
+			echo "Servicos Iniciados com Sucesso"
+			echo ""
+			echo ""
+			exit
+		fi 
 	;;
     "down" )
 		echo ""
@@ -43,6 +54,16 @@ case "$1" in
 		echo ""
         exit
 	;;
+	"restart" )
+		echo ""
+     	echo "Reiniciando Containers"
+		echo ""
+		cd $HOME/projetos/applications/laradock
+        docker-compose restart
+		echo ""
+        exit
+	;;
+
 	"workspace" )
 		echo ""
 		echo "Acessando Workspace Container"
