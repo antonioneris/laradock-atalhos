@@ -1,6 +1,9 @@
 #!/bin/bash
 # script para iniciar infra laradoc de desenvolvimento WEB
 
+# Laradock path Ex. $HOME/projetos/applications/laradock
+
+path=$HOME/projetos/applications/laradock
 
 case "$1" in
     "up" )
@@ -18,7 +21,7 @@ case "$1" in
 			echo ""
 			echo ""
 			echo "Starting" 
-			cd $HOME/projetos/applications/laradock
+			cd $path
 			docker-compose up -d mysql apache2 phpmyadmin
 			echo ""
 			echo "Servicos Iniciados com Sucesso"
@@ -30,7 +33,7 @@ case "$1" in
 			exit
 		else
 			echo "Starting $2 Container"
-			cd $HOME/projetos/applications/laradock
+			cd $path
 			docker-compose up -d $2
 			echo ""
 			echo "Servicos Iniciados com Sucesso"
@@ -43,7 +46,7 @@ case "$1" in
 		echo ""
      	echo "Desligando Infra"
 		echo ""
-		cd $HOME/projetos/applications/laradock
+		cd $path
         docker-compose down
 		echo ""
 		echo "Servicos Desligados com sucesso"
@@ -58,7 +61,7 @@ case "$1" in
 		echo ""
      	echo "Reiniciando Containers"
 		echo ""
-		cd $HOME/projetos/applications/laradock
+		cd $path
         docker-compose restart
 		echo ""
         exit
@@ -77,7 +80,7 @@ case "$1" in
 		echo ""
      	echo "Listando Containers"
 		echo ""
-		cd $HOME/projetos/applications/laradock
+		cd $path
         docker-compose ps
 		echo ""
         exit
