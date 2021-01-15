@@ -1,9 +1,17 @@
 #!/bin/bash
 # script para iniciar infra laradoc de desenvolvimento WEB
 
+#path laradock atalhos
+
+work_dir=$HOME/projetos/infra/laradock-atalhos
+
 # Laradock path Ex. $HOME/projetos/applications/laradock
 
-path=$HOME/projetos/applications/laradock
+path=$HOME/projetos/infra/laradock
+
+# Laradock containers padroes que sao iniciados, voce pode ajustar comforme a sua nescessidade.
+
+containers="mysql apache2 phpmyadmin"
 
 case "$1" in
     "up" )
@@ -17,12 +25,12 @@ case "$1" in
 			echo "################################################################################"
 			echo ""
 			echo "Container startados com docker-compose"
-			echo "Mysql Server, Apache2, PHP 7.3 e phpmyadmin"
+			echo "$containers"
 			echo ""
 			echo ""
 			echo "Starting" 
 			cd $path
-			docker-compose up -d mysql apache2 phpmyadmin
+			docker-compose up -d $containers
 			echo ""
 			echo "Servicos Iniciados com Sucesso"
 			echo ""
@@ -50,9 +58,6 @@ case "$1" in
         docker-compose down
 		echo ""
 		echo "Servicos Desligados com sucesso"
-		echo ""
-		echo "Por Antonio Neris"
-		echo "antonioneris@gmail.com"
 		echo ""
 		echo ""
         exit
@@ -84,6 +89,57 @@ case "$1" in
         docker-compose ps
 		echo ""
         exit
+	;;
+	"vhost" )
+		
+		cd $path/apache2/sites
+		if [ -n $2 ]
+		then
+			#Pegando as VAriaves de host e diretorio
+			vhost=$3
+			diretorio=$5
+
+
+			#criar vHost no apache laradock
+
+			echo "Criando arquivo de configuracao $vhost"
+			echo "
+			<VirtualHost *:80>
+			ServerName $vhost
+			ServerAlias www.$vhost
+			DocumentRoot /var/www/$diretorio
+			Options Indexes FollowSymLinks
+
+			<Directory "/var/www/$diretorio/">
+				AllowOverride All
+				<IfVersion < 2.4>
+				Allow from all
+				</IfVersion>
+				<IfVersion >= 2.4>
+				Require all granted
+				</IfVersion>
+			</Directory>
+
+			</VirtualHost>
+			" > $path/apache2/sites/$vhost.conf
+
+			
+			cat $path/apache2/sites/$vhost.conf
+			echo "Vhost Criado"
+
+			#criar registro no arquivo de hosts
+			echo "Atualiando arquivo /etc/hosts"
+			sudo $work_dir/updateHosts $vhost
+			
+		
+		else 
+			echo ""
+			echo "Para criar um vHost voce precisa passar o host e document root do site"
+			echo "Ex..: laradock vhost -h exemplo.local -d exemplo/public"
+			echo ""
+			
+		fi
+		
 	;;
 esac
 

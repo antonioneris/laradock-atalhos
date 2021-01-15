@@ -1,0 +1,4 @@
+#!/bin/bash
+vhost=$1
+echo "#vhost criado com laradock-atalos" >> /etc/hosts
+echo "127.0.0.1     $vhost" >> /etc/hosts
