@@ -3,15 +3,15 @@
 
 #path laradock atalhos
 
-work_dir=$HOME/projetos/infra/laradock-atalhos
+work_dir=$HOME/projetos/scripts/dev-infra/
 
 # Laradock path Ex. $HOME/projetos/applications/laradock
 
-path=$HOME/projetos/infra/laradock
+path=$HOME/projetos/applications/laradock/
 
 # Laradock containers padroes que sao iniciados, voce pode ajustar comforme a sua nescessidade.
 
-containers="mysql apache2 phpmyadmin"
+containers="mysql apache2 adminer"
 
 case "$1" in
     "up" )
@@ -76,7 +76,16 @@ case "$1" in
 		echo ""
 		echo "Acessando Workspace Container"
 		echo ""
-		docker exec -ti laradock_workspace_1 bash
+		docker exec -ti laradock-workspace-1 bash
+		echo ""
+		echo "saindo....OK"
+		exit
+	;;
+	"ws" )
+		echo ""
+		echo "Acessando Workspace Container"
+		echo ""
+		docker exec -ti laradock-workspace-1 bash
 		echo ""
 		echo "saindo....OK"
 		exit
